@@ -1,6 +1,7 @@
 import tweepy
 import sys
 import json
+from twitter-keys import APP_KEY, APP_SECRET
 
 def cache_tweets():    
 
@@ -9,7 +10,7 @@ def cache_tweets():
     tweets_per_query = 100  # this is the max the API permits
     file_name = 'tweets.txt' 
 
-    auth = tweepy.AppAuthHandler('NdjZ21poYPH5CsYWRDrqOm6oZ', '2FWSpdL7vIwGDmNrEkmLNRGv4GTuoiYTOTKVyHzKuVz1WGOuWY')
+    auth = tweepy.AppAuthHandler(APP_KEY, APP_SECRET)
 
     api = tweepy.API(auth, wait_on_rate_limit=True,
 				   wait_on_rate_limit_notify=True)
@@ -59,12 +60,6 @@ def cache_tweets():
 
             except tweepy.TweepError as e:
                 print('error ', e)
-
-def get_tweet_list():
-
-    file = open('tweets.txt', 'r')
-    return [json.load(line) for line in file]
-
 
 cache_tweets()
 
