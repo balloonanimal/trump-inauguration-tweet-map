@@ -4,5 +4,5 @@ Just a quick little visualization of how people are feeling about the recent ina
 
 Most of the code is pretty scripty as I was rushing to complete it. The interactive web version only works on an http server. Python and node both supply one that should be really easy to start up.
 
-!(screenshot.png?raw=true)
+![Run the webapp for the full experience!](screenshot.png?raw=true "")
 
