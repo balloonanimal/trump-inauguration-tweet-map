@@ -1,5 +1,5 @@
-var width = 960;
-var height = 500;
+var width = 1200;
+var height = 700;
 var svg = d3.select("body")
     .append("svg")
     .attr("width", width)
@@ -7,14 +7,18 @@ var svg = d3.select("body")
 
 var projection = d3.geo.albersUsa()
     .translate([width/2, height/2])
-    .scale([1000]);
+    .scale([1500]);
 
 var path = d3.geo.path()
     .projection(projection);
-path.pointRadius(2);
+path.pointRadius(3);
 
 var states = svg.append("g");
 var tweets = svg.append("g");
+var div = d3.select("body")
+    .append("div")
+    .attr("class", "popup")
+    .attr("opacity", 0);
 
 var state_color = d3.scale.quantize()
     .domain([40,60])
@@ -55,6 +59,19 @@ d3.json("tweets.json", function(json){
         .attr("fill", function(d){
             var sentiment = d.properties.score;
             return tweet_color(sentiment);
-        });
+        })
+        .on("mouseover", function(d){
+            div.transition()
+                .duration(200)
+                .style("opacity", 0.9);
+            div.text(d.properties.text)
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d) {       
+            div.transition()        
+                .duration(500)      
+                .style("opacity", 0);  
+        })
 });
 
