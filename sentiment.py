@@ -42,7 +42,7 @@ def preprocess(s, lowercase=False):
 
 def tweets_list():
     with open('tweets.txt', 'r') as file:
-        return [json.loads(line) for line in file]
+        return [json.loads(line) for line in file if "#trndnl" not in line]
 
 
 punctuation = list(string.punctuation)
@@ -55,7 +55,7 @@ def common_word_counter(tweets):
     counter = Counter()
     for tweet in tweets:
         terms = [term for term in preprocess(tweet['text'], lowercase=True)
-                 if term not in stop
+                 if term not in stop 
                  and not term.startswith(('#', '@'))]
         counter.update(terms)
     return counter
@@ -71,7 +71,7 @@ def cooccurence_matrix(tweets):
     for tweet in tweets:
         terms_only = [term for term in preprocess(tweet['text'], lowercase=True)
                       if term not in stop
-                      and not term.startswith(('#', '@'))]
+                      and not term.startswith(('@'))]
         for i in range(len(terms_only)-1):            
             for j in range(i+1, len(terms_only)):
                 w1, w2 = sorted([terms_only[i], terms_only[j]])                
@@ -103,13 +103,13 @@ def calculate_semantic_orientations(probability_word, probability_cooccurences, 
 
 
     semantic_orientation = {}
-    count = 0
+    count = len(probability_word)
     for term, _ in probability_word.items():
         positiveness = sum(pmi[term][known_word] for known_word in positive_words)
         negativeness = sum(pmi[term][known_word] for known_word in negative_words)
         semantic_orientation[term] = positiveness - negativeness
-        count = count + 1
-        print(7573 - count)
+        count = count - 1
+        print(count)
     return semantic_orientation
 
 def score_tweets(tweets, semantic_orientations):
@@ -123,7 +123,7 @@ def score_tweets(tweets, semantic_orientations):
                 pass
         tweet_map = {'text' : tweet['text'],
                      'coordinates' : tweet['coordinates']['coordinates'],
-                     'score' : acc}
+                     'score' : acc / len(tweet['text'])}
         processed_tweets.append(tweet_map)
     return processed_tweets
 
