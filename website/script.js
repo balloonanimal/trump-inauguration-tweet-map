@@ -40,7 +40,8 @@ d3.csv("election_results.csv", function(csv){
                     }
                 }
             })
-            .attr("stroke", "#eee")
+            .attr("stroke", "#eeeeee")
+            .attr("stroke-width", 2)
     });
 });
 
@@ -54,8 +55,8 @@ d3.json("tweets.json", function(json){
         .enter()
         .append("path")
         .attr("d", path)
-        .attr("stroke-width", 1)
-        .attr("stroke", "#eee")
+        .attr("stroke-width", 1.5)
+        .attr("stroke", "#eeeeee")
         .attr("fill", function(d){
             var sentiment = d.properties.score;
             return tweet_color(sentiment);
